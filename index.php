@@ -71,17 +71,6 @@ function counting_tasks(array $tasks, string $project_name) {
     return $task_quantity;
 }
 
-/**
- * Функция-обёртка, фильтрует содержимое и возвращает строку, очищенную от опасных символов. Защита от XSS
- * @param string $str получаемый набор символов
- * @return string $text возвращает обработанный набор символов с заменой спецсимволов на HTML-мнемоники
- */
-function esc($str) {
-	$text = htmlspecialchars($str);
-
-	return $text;
-}
-
 
 require_once './helpers.php';
 

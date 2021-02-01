@@ -5,7 +5,7 @@
         <ul class="main-navigation__list">
             <?php foreach ($categories as $category): ?>
                 <li class="main-navigation__list-item">
-                    <a class="main-navigation__list-item-link" href="#"><?= esc($category); ?></a>
+                    <a class="main-navigation__list-item-link" href="#"><?= htmlspecialchars($category); ?></a>
                     <span class="main-navigation__list-item-count"><?= counting_tasks($tasks, $category); ?></span>
                 </li>
             <?php endforeach; ?>
@@ -48,11 +48,11 @@
         <tr class="tasks__item task <?php if ($task['status']): ?>task--completed<?php endif; ?>">
             <td class="task__select">
                 <label class="checkbox task__checkbox">
-                    <input class="checkbox__input visually-hidden" type="checkbox" checked>
-                    <span class="checkbox__text"><?= esc($task['title']); ?></span>
+                    <input class="checkbox__inpugitt visually-hidden" type="checkbox" checked>
+                    <span class="checkbox__text"><?= htmlspecialchars($task['title']); ?></span>
                 </label>
             </td>
-            <td class="task__date"><?= esc($task['date']); ?></td>
+            <td class="task__date"><?= htmlspecialchars($task['date']); ?></td>
             <td class="task__controls"></td>
         </tr>
         <?php endforeach; ?>
