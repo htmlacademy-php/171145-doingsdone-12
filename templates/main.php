@@ -6,7 +6,7 @@
             <?php foreach ($categories as $category): ?>
                 <li class="main-navigation__list-item">
                     <a class="main-navigation__list-item-link" href="#"><?= htmlspecialchars($category); ?></a>
-                    <span class="main-navigation__list-item-count"><?= counting_tasks($tasks, $category); ?></span>
+                    <span class="main-navigation__list-item-count"><?= count_tasks($tasks, $category); ?></span>
                 </li>
             <?php endforeach; ?>
         </ul>
@@ -34,7 +34,7 @@
         </nav>
 
         <label class="checkbox">
-            <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?php if ($show_complete_tasks): ?> checked <?php endif; ?> >
+            <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?php if ($show_complete_tasks): ?> checked <?php endif;?>>
             <span class="checkbox__text">Показывать выполненные</span>
         </label>
     </div>
@@ -45,7 +45,10 @@
                 continue;
             }
         ?>
-        <tr class="tasks__item task <?php if ($task['status']): ?>task--completed<?php endif; ?>">
+        <tr class="tasks__item task
+            <?php if ($task['status']): ?>task--completed<?php endif;?>
+            <?php if (isset($task['date']) && countHoursBetweenDates($task['date']) <= 24 && !$task['status']): ?>task--important<?php endif;?>
+        ">
             <td class="task__select">
                 <label class="checkbox task__checkbox">
                     <input class="checkbox__inpugitt visually-hidden" type="checkbox" checked>
