@@ -51,7 +51,7 @@
         ">
             <td class="task__select">
                 <label class="checkbox task__checkbox">
-                    <input class="checkbox__inpugitt visually-hidden" type="checkbox" checked>
+                    <input class="checkbox__input visually-hidden" type="checkbox" checked>
                     <span class="checkbox__text"><?= htmlspecialchars($task['title']); ?></span>
                 </label>
             </td>
@@ -61,5 +61,4 @@
         <?php endforeach; ?>
     </table>
 </main>
-
 
