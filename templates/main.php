@@ -3,10 +3,10 @@
 
     <nav class="main-navigation">
         <ul class="main-navigation__list">
-            <?php foreach ($categories as $category): ?>
+            <?php foreach ($projects as $project): ?>
                 <li class="main-navigation__list-item">
-                    <a class="main-navigation__list-item-link" href="#"><?= htmlspecialchars($category); ?></a>
-                    <span class="main-navigation__list-item-count"><?= count_tasks($tasks, $category); ?></span>
+                    <a class="main-navigation__list-item-link" href="#"><?= htmlspecialchars($project); ?></a>
+                    <span class="main-navigation__list-item-count"><?= count_tasks($tasks, $project); ?></span>
                 </li>
             <?php endforeach; ?>
         </ul>
