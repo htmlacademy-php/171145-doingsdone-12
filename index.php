@@ -6,7 +6,7 @@ require_once './date.php';
 require_once './functions.php';
 
 //variables
-$user_name = 'Марти Макфлай';
+$user_name = 'Марти';
 $page_title = 'Дела в порядке';
 
 // показывать или нет выполненные задачи
