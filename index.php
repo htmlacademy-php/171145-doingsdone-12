@@ -13,7 +13,7 @@ $page_title = 'Дела в порядке';
 $show_complete_tasks = rand(0, 1);
 
 $page_content = include_template('main.php', [
-    'projects' => $projects,
+    //'projects' => $projects,
     'tasks' => $tasks,
     'show_complete_tasks' => $show_complete_tasks,
 ]);

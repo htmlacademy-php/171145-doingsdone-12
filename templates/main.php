@@ -1,3 +1,18 @@
+<?php
+    $connect = mysqli_connect("localhost", "root", "root", "doingsdone");
+    mysqli_set_charset($connect, "utf8");
+
+    if (!$connect) {
+        die("Ошибка подключения: " . mysqli_connect_error() . mysqli_errno());
+        }
+        else {
+            $sql = "SELECT name FROM projects WHERE user_id = 1";
+            $result = mysqli_query($connect, $sql);
+            $records_count = mysqli_num_rows($result);
+            print_r($result);
+    }
+?>
+
 <section class="content__side">
     <h2 class="content__side-heading">Проекты</h2>
 

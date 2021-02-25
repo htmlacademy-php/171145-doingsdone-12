@@ -28,10 +28,10 @@ SELECT name FROM projects WHERE user_id = 1;
 SELECT name FROM projects WHERE user_id = 2;
 
 /*Получить список всех задач для одного проекта*/
-SELECT * name FROM tasks WHERE project_id = 1;
-SELECT * name FROM tasks WHERE project_id = 2;
-SELECT * name FROM tasks WHERE project_id = 3;
-SELECT * name FROM tasks WHERE project_id = 4;
+SELECT * FROM tasks WHERE project_id = 1;
+SELECT * FROM tasks WHERE project_id = 2;
+SELECT * FROM tasks WHERE project_id = 3;
+SELECT * FROM tasks WHERE project_id = 4;
 
 /*Пометить задачу как выполненную*/
  UPDATE tasks SET status = 1 WHERE id = 4;
