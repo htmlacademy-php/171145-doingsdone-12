@@ -4,17 +4,26 @@ require_once './data.php';
 require_once './helpers.php';
 require_once './date.php';
 require_once './functions.php';
-$db = require_once './db.php';
+require_once './db.php';
 
-//$connect = mysqli_connect($db['host'], $db['user'], $db['password'], $db['database']);
-$connect = mysqli_connect('localhost', 'root', 'root', 'doingsdone');
+/**
+* подключение БД
+* @param array данные дял соединения с БД
+* @return mysqli_connect соединение с БД
+*/
+function set_db_connect(array $db_settings) {
+    return mysqli_connect($db_settings['host'], $db_settings['user'], $db_settings['password'], $db_settings['name']);
+}
+
+$connect = set_db_connect($db);
 mysqli_set_charset($connect, "utf8");
 
     if (!$connect) {
         die('Ошибка подключения: ' . mysqli_connect_error() . mysqli_errno());
     }
     else {
-        $sql_projects = "SELECT * FROM projects WHERE user_id = 1";
+        echo 'it`s working';
+       /*  $sql_projects = "SELECT * FROM projects WHERE user_id = 1";
         $sql_tasks = "SELECT * FROM tasks where user_id = 1";
         $result_projects = mysqli_query($connect, $sql_projects);
         $result_tasks= mysqli_query($connect, $sql_tasks);
@@ -25,7 +34,7 @@ mysqli_set_charset($connect, "utf8");
 
         if ($result_tasks) {
             $tasks = mysqli_fetch_all($result_tasks, MYSQLI_ASSOC);
-        }
+        } */
     }
         /* else {
             $error = mysqli_error($connect);
