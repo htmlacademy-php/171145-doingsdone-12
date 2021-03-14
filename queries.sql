@@ -1,3 +1,5 @@
+USE 'doingsdone';
+
 /*Добавить пользователей*/
 INSERT INTO users (date_reg, email, password, name)
 VALUES ('01.12.2020', 'macfly@mail.com', 'paSS123', 'Марти'),
