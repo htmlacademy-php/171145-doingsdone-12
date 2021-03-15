@@ -6,8 +6,8 @@
             <?php foreach ($projects as $project): ?>
 
                 <li class="main-navigation__list-item">
-                    <a class="main-navigation__list-item-link" href="#"><?= htmlspecialchars($project); ?></a>
-                    <span class="main-navigation__list-item-count"><?= count_tasks($tasks, $project); ?></span>
+                    <a class="main-navigation__list-item-link" href="#"><?= htmlspecialchars($project['name']); ?></a>
+                    <span class="main-navigation__list-item-count"><?= count_tasks($tasks, $project['id']); ?></span>
                 </li>
             <?php endforeach; ?>
         </ul>
@@ -48,7 +48,7 @@
         ?>
         <tr class="tasks__item task
             <?php if ($task['status']): ?>task--completed<?php endif;?>
-            <?php if (isset($task['date']) && countHoursBetweenDates($task['date']) <= 24 && !$task['status']): ?>task--important<?php endif;?>
+            <?php if (isset($task['deadline_date']) && countHoursBetweenDates($task['deadline_date']) <= 24 && !$task['status']): ?>task--important<?php endif;?>
         ">
             <td class="task__select">
                 <label class="checkbox task__checkbox">
@@ -56,7 +56,7 @@
                     <span class="checkbox__text"><?= htmlspecialchars($task['name']); ?></span>
                 </label>
             </td>
-            <td class="task__date"><?= htmlspecialchars($task['date']); ?></td>
+            <td class="task__date"><?= date_format(date_create($task['deadline_date']), 'd.m.Y'); ?></td>
             <td class="task__controls"></td>
         </tr>
         <?php endforeach; ?>
