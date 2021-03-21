@@ -2,15 +2,15 @@
 
 /**
  * Подсчёт количества задач в каждом из проектов
- * @param array $tasks список задач в виде массива
+ * @param array $tasks список задач
  * @param string $project_id id проекта
  * @return int $task_quantity число задач для переданного проекта
  */
-function count_tasks(array $tasks, string $project_id) : int {
+function count_tasks(array $tasks, int $project_id) : int {
     $task_quantity = 0;
 
     foreach ( $tasks as $task ) {
-        if (strval($task['project_id'] === $project_id)) {
+        if ((int) $task['project_id'] === $project_id) {
             ++$task_quantity;
         }
     }
@@ -20,17 +20,24 @@ function count_tasks(array $tasks, string $project_id) : int {
 
 
 /**
- * возвращает результат запроса в виде ассоциативного массива
+ * возвращает результат запроса c плейсхолдерами
  * @param mysqli $connect параметры соединения
  * @param string $sql_query sql-запрос
+ * @param  data //
  */
-function get_fetch_all($connect, string $sql_query) {
-    $result = mysqli_query($connect, $sql_query);
+function get_sql_result($connect, $sql_query, $data) {
+    $stmt = mysqli_stmt_init($connect);
 
-    if(!$result) {
-        $error = mysqli_error($connect);
-        die('Ошибка MySQL: ' . $error);
+    if(!mysqli_stmt_prepare($stmt, $sql_query)) {
+        $errorMsg = 'Не удалось инициализировать подготовленное выражение: ' . mysqli_error($connect);
+        die($errorMsg);
+
+    } else {
+        mysqli_stmt_bind_param($stmt, "i", $data);
+        mysqli_stmt_execute($stmt);
+
+        $result =  mysqli_stmt_get_result($stmt);
+
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
-
-    return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
