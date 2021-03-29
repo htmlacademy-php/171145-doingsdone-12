@@ -23,21 +23,24 @@ function count_tasks(array $tasks, int $project_id) : int {
  * возвращает результат запроса c плейсхолдерами
  * @param mysqli $connect параметры соединения
  * @param string $sql_query sql-запрос
- * @param  data //
+ * @param  array data
+ * @return array готовые данные
  */
-function get_sql_result($connect, $sql_query, $data) {
+function get_sql_result($connect, $sql_query, array $data) {
     $stmt = mysqli_stmt_init($connect);
 
     if(!mysqli_stmt_prepare($stmt, $sql_query)) {
         $errorMsg = 'Не удалось инициализировать подготовленное выражение: ' . mysqli_error($connect);
         die($errorMsg);
 
-    } else {
-        mysqli_stmt_bind_param($stmt, "i", $data);
-        mysqli_stmt_execute($stmt);
-
-        $result =  mysqli_stmt_get_result($stmt);
-
-        return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
+
+    if ($data) {
+			mysqli_stmt_bind_param($stmt, "s", ...(array)$data);
+		}
+        mysqli_stmt_execute($stmt);
+      
+    $result =  mysqli_stmt_get_result($stmt);
+
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }

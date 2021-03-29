@@ -11,6 +11,6 @@ $connect = mysqli_connect($db['host'], $db['user'], $db['password'], $db['name']
 
 if (!$connect) {
     die('Ошибка подключения: ' . mysqli_connect_error() . mysqli_errno());
-} else {
-    mysqli_set_charset($connect, "utf8");
 }
+
+mysqli_set_charset($connect, "utf8");
