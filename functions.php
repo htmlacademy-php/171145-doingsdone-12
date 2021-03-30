@@ -3,7 +3,7 @@
 /**
  * Подсчёт количества задач в каждом из проектов
  * @param array $tasks список задач
- * @param string $project_id id проекта
+ * @param int $project_id id проекта
  * @return int $task_quantity число задач для переданного проекта
  */
 function count_tasks(array $tasks, int $project_id) : int {
