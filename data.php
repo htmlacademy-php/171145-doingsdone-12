@@ -1,49 +1,15 @@
 <?php
 
-$projects = [
-    'Входящие',
-    'Учёба',
-    'Работа',
-    'Домашние дела',
-    'Авто'
-];
+//variables
+$user_name = 'Марти';
+$page_title = 'Дела в порядке';
 
-$tasks = [
-    [
-        'name' => 'Собеседование в IT компании',
-        'date' => '01.03.2021',
-        'project' => 'Работа',
-        'status' => false,
-    ],
-    [
-        'name' => 'Выполнить тестовое задание',
-        'date' => '04.02.2021',
-        'project' => 'Работа',
-        'status' => false
-    ],
-    [
-        'name' => 'Сделать задание первого раздела',
-        'date' => '21.12.2020',
-        'project' => 'Учёба',
-        'status' => true
-    ],
-    [
-        'name' => 'Встреча с другом',
-        'date' => '22.02.2021',
-        'project' => 'Входящие',
-        'status' => false
-    ],
-    [
-        'name' => 'Купить корм для кота',
-        'date' => '31.01.2021',
-        'project' => 'Домашние дела',
-        'status' => false
-    ],
-    [
-        'name' => 'Заказать пиццу',
-        'date' => null,
-        'project' => 'Домашние дела',
-        'status' => false
-    ],
+$current_user_id = 1;
 
-];
+//подготовленные запросы с плейсхолдерами
+$sql_tasks =  "SELECT * FROM tasks where user_id = ?;";
+$sql_projects = "SELECT * FROM projects WHERE user_id = ?;";
+
+//получить список проектов и задач
+$projects = get_sql_result($connect, $sql_projects, [$current_user_id]);
+$tasks = get_sql_result($connect, $sql_tasks, [$current_user_id]);
