@@ -5,8 +5,8 @@
         <ul class="main-navigation__list">
             <?php foreach ($projects as $project): ?>
 
-                <li class="main-navigation__list-item">
-                    <a class="main-navigation__list-item-link" href="#"><?= htmlspecialchars($project['name']); ?></a>
+                <li class="main-navigation__list-item <?php if ($_SERVER['REQUEST_URI'] === '/?project_id=' . $project['id']): ?> main-navigation__list-item--active <?php endif; ?>">
+                    <a class="main-navigation__list-item-link" href="/?project_id=<?= $project['id']; ?>"><?= htmlspecialchars($project['name']); ?></a>
                     <span class="main-navigation__list-item-count"><?= count_tasks($tasks, $project['id']); ?></span>
                 </li>
             <?php endforeach; ?>
@@ -40,8 +40,16 @@
         </label>
     </div>
 
+    <?php
+        if (!$tasks_existence) {
+            $message = 'Добавьте задачу ';
+            print($message);
+        }
+    ?>
+
     <table class="tasks">
-        <?php foreach ($tasks as $task):
+        <?php
+        foreach ($tasks as $task):
             if ($task['status'] && $show_complete_tasks === 0) {
                 continue;
             }
