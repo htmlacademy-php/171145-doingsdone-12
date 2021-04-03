@@ -20,13 +20,13 @@ function count_tasks(array $tasks, int $project_id) : int {
 
 
 /**
- * возвращает результат запроса c плейсхолдерами (одним fix)
+ * возвращает результат запроса c плейсхолдерами
  * @param mysqli $connect параметры соединения
  * @param string $sql_query sql-запрос
  * @param  array data
  * @return array готовые данные
  */
-function get_sql_result($connect, $sql_query, $data = []) {
+function get_sql_result($connect, $sql_query, $data = []) : array {
     $stmt = mysqli_stmt_init($connect);
 
     if(!mysqli_stmt_prepare($stmt, $sql_query)) {
@@ -36,7 +36,7 @@ function get_sql_result($connect, $sql_query, $data = []) {
     }
 
     if ($data) {
-			mysqli_stmt_bind_param($stmt, "s", ...(array)$data);
+			mysqli_stmt_bind_param($stmt, str_repeat('s', count($data)), ...$data);
 		}
 
     mysqli_stmt_execute($stmt);
@@ -46,41 +46,53 @@ function get_sql_result($connect, $sql_query, $data = []) {
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
+
 /**
- * проверяет существование ключа в подмассиве
- * @param array $array массив
- * @param string $key нужный ключ
- * @param $value искомое значение
- * @return boolean true или false
+ * Получить список проектов по текущ
  */
-function sub_array_key_exists($array, string $key, $value) {
-    foreach ($array as $sub_array) {
-        if ($sub_array[$key] === $value) {
-            return true;
+function get_current_project_id($projects) {
+
+    $result = null;
+
+    if (isset($_GET['project_id'])) {
+        $value = filter_input(INPUT_GET, 'project_id');
+
+        foreach ($projects as $project) {
+            if ($project['id'] === (int) $value) {
+                $result = $value;
+            }
         }
     }
-    return false;
+
+    if(is_null($result)) {
+        http_response_code(404);
+        exit();
+    }
+
+    return (int) $result;
 }
 
 /**
- * два плейсхолдера. Временно, до решения проблемы с множеством плейсхолдеров.
+ * Получить список проектов по юзеру
+ * @param $connect параметры соединения
+ * @param int $curren_user_id текущий пользователь
+ * @return array массив проектов
  */
-function get_sql_task_result($connect, $sql_query, $data = []) {
-    $stmt = mysqli_stmt_init($connect);
+function get_projects($connect, int $current_user_id) {
+    $sql = "SELECT * FROM projects WHERE user_id = ?;";
 
-    if(!mysqli_stmt_prepare($stmt, $sql_query)) {
-        $errorMsg = 'Не удалось инициализировать подготовленное выражение: ' . mysqli_error($connect);
-        die($errorMsg);
+    return get_sql_result($connect, $sql, [$current_user_id]);
+}
 
-    }
+/**
+ * Получить список задач по юзеру и проекту
+ * @param $connect параметры соединения
+ * @param int $curren_user_id текущий пользователь
+ * @param int $curren_project_id текущий проект
+ * @return array массив задач
+ */
+function get_tasks($connect, int $current_user_id, int $current_project_id):array {
+    $sql =  "SELECT * FROM tasks where user_id = ? and project_id = ?;";
 
-    if ($data) {
-			mysqli_stmt_bind_param($stmt, "ss", ...(array)$data);
-		}
-
-    mysqli_stmt_execute($stmt);
-
-    $result =  mysqli_stmt_get_result($stmt);
-
-    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return get_sql_result($connect, $sql, [$current_user_id, $current_project_id]);
 }
