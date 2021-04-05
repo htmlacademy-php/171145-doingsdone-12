@@ -48,9 +48,12 @@ function get_sql_result($connect, $sql_query, $data = []) : array {
 
 
 /**
- * Получить список проектов по текущ
+ * Получить список проектов по текущему запросу, если запись существует
+ * @param array $projects список всех проектов
+ * @return integer|null $result;
  */
-function get_current_project_id($projects) {
+
+function get_current_project_id(array $projects): ?int {
 
     $result = null;
 
@@ -62,19 +65,20 @@ function get_current_project_id($projects) {
                 $result = $value;
             }
         }
+
+        if(is_null($result)) {
+            http_response_code(404);
+            exit();
+        }
     }
 
-    if(is_null($result)) {
-        http_response_code(404);
-        exit();
-    }
 
-    return (int) $result;
+    return $result;
 }
 
 /**
  * Получить список проектов по юзеру
- * @param $connect параметры соединения
+ * @param mysqli $connect параметры соединения
  * @param int $curren_user_id текущий пользователь
  * @return array массив проектов
  */
@@ -84,15 +88,45 @@ function get_projects($connect, int $current_user_id) {
     return get_sql_result($connect, $sql, [$current_user_id]);
 }
 
+
+/**
+ * Получить список всех задач по юзеру
+ * @param mysqli $connect параметры соединения
+ * @param int $curren_user_id текущий пользователь
+ * @return array массив задач
+ */
+function get_tasks($connect, int $current_user_id): array {
+    $sql =  "SELECT * FROM tasks where user_id = ?;";
+
+    return get_sql_result($connect, $sql, [$current_user_id]);
+}
+
+
 /**
  * Получить список задач по юзеру и проекту
- * @param $connect параметры соединения
+ * @param mysqli $connect параметры соединения
  * @param int $curren_user_id текущий пользователь
  * @param int $curren_project_id текущий проект
  * @return array массив задач
  */
-function get_tasks($connect, int $current_user_id, int $current_project_id):array {
+function get_tasks_on_project($connect, int $current_user_id, int $current_project_id): array {
     $sql =  "SELECT * FROM tasks where user_id = ? and project_id = ?;";
 
     return get_sql_result($connect, $sql, [$current_user_id, $current_project_id]);
+}
+
+
+/**
+ * Показать список задач в зависимости от полученных условий
+ * @param mysqli $connect параметры соединения
+ * @param int $current_user_id текущий пользователь
+ * @param int|null $current_project_id текущий проект
+ * @return array массив задач
+ */
+function show_tasks($connect, int $current_user_id, ?int $current_project_id): array {
+    if ( is_null($current_project_id) ) {
+        return get_tasks($connect, $current_user_id);
+    }
+
+    return get_tasks_on_project($connect, $current_user_id, $current_project_id);
 }
