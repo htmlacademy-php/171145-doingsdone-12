@@ -33,6 +33,7 @@
         </header>
 
         <div class="content">
+            <?= $sidebar_content; ?>
             <?= $page_content; ?>
         </div>
     </div>

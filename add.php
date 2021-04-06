@@ -6,16 +6,9 @@ require_once './functions.php';
 require_once './db.php';
 require_once './data.php';
 
-// показывать или нет выполненные задачи
-$show_complete_tasks = rand(0, 1);
-
-// для index.php
-$page_title = 'Дела в порядке';
-
+$page_title = 'Добавление задачи';
 $projects = get_projects($connect, $current_user_id);
-
 $current_project_id = get_current_project_id($projects);
-
 $tasks = show_tasks($connect, $current_user_id, $current_project_id);
 
 $sidebar_content = include_template('sidebar-projects.php', [
@@ -24,11 +17,8 @@ $sidebar_content = include_template('sidebar-projects.php', [
     'tasks' => $tasks,
 ]);
 
-$page_content = include_template('main.php', [
+$page_content = include_template('form-task.php', [
     'projects' => $projects,
-    'current_project_id' => $current_project_id,
-    'tasks' => $tasks,
-    'show_complete_tasks' => $show_complete_tasks,
 ]);
 
 $layout = include_template('layout.php', [
