@@ -61,7 +61,7 @@ function get_current_project_id(array $projects): ?int {
         $value = filter_input(INPUT_GET, 'project_id');
 
         foreach ($projects as $project) {
-            if ($project['id'] === (int) $value) {
+            if ((int)$project['id'] === (int) $value) {
                 $result = $value;
             }
         }
