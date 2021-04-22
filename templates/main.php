@@ -45,6 +45,9 @@
                     <span class="checkbox__text"><?= htmlspecialchars($task['name']); ?></span>
                 </label>
             </td>
+            <td class="task__file">
+                <a class="download-link" href="/<?=$task['file_path']?>"><?=$task['file_path']?></a>
+            </td>
             <td class="task__date"><?= date_format(date_create($task['deadline_date']), 'd.m.Y'); ?></td>
             <td class="task__controls"></td>
         </tr>
