@@ -9,7 +9,6 @@ require_once './data.php';
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
 
-// для index.php
 $page_title = 'Дела в порядке';
 
 $projects = get_projects($connect, $current_user_id);
