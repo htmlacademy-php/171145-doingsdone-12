@@ -76,6 +76,7 @@ function get_current_project_id(array $projects): ?int {
     return $result;
 }
 
+
 /**
  * Получить список проектов по юзеру
  * @param mysqli $connect параметры соединения
@@ -96,7 +97,7 @@ function get_projects($connect, int $current_user_id) {
  * @return array массив задач
  */
 function get_tasks($connect, int $current_user_id): array {
-    $sql =  "SELECT * FROM tasks where user_id = ?;";
+    $sql =  "SELECT * FROM tasks WHERE user_id = ?;";
 
     return get_sql_result($connect, $sql, [$current_user_id]);
 }
@@ -110,7 +111,7 @@ function get_tasks($connect, int $current_user_id): array {
  * @return array массив задач
  */
 function get_tasks_on_project($connect, int $current_user_id, int $current_project_id): array {
-    $sql =  "SELECT * FROM tasks where user_id = ? and project_id = ?;";
+    $sql =  "SELECT * FROM tasks WHERE user_id = ? AND project_id = ?;";
 
     return get_sql_result($connect, $sql, [$current_user_id, $current_project_id]);
 }
@@ -129,4 +130,30 @@ function show_tasks($connect, int $current_user_id, ?int $current_project_id): a
     }
 
     return get_tasks_on_project($connect, $current_user_id, $current_project_id);
+}
+
+/**
+ * Записать задачу в таблицу Task
+ * @param mysqli $connect параметры соединения
+ * @param array $data массив данных для запроса на места плейсхолдеров
+ */
+function insert_task($connect, int $current_user_id, array $data = []) {
+    $sql = "INSERT INTO tasks (create_date, status, name, file_path, deadline_date, user_id, project_id) VALUES (NOW(), 0, ?, ?, ?, ?, ?);";
+    $stmt =  db_get_prepare_stmt($connect, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+
+
+    if ($result) {
+        $task_id = mysqli_insert_id($connect);
+
+        $sql = "SELECT project_id FROM tasks WHERE user_id = ? AND id = ?;";
+        $result = get_sql_result($connect, $sql, [$current_user_id, $task_id]);
+
+        header("Location: index.php?project_id=" . $result[0]['project_id']);
+
+    } else {
+        $error = mysqli_error($connect);
+        var_dump($error);
+        print("Ошибка: " . $error);
+    }
 }
